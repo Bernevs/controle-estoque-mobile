@@ -11,3 +11,9 @@ export async function getClienteById(id: number) {
 
   return response.data;
 }
+
+export async function createCliente(nome: string) {
+  const response = await api.post("/cliente", { nome: nome });
+
+  return response;
+}
