@@ -17,3 +17,15 @@ export async function createCliente(nome: string) {
 
   return response;
 }
+
+export async function updateCliente(id: number, nome: string) {
+  const response = await api.put(`/cliente/${id}`, { novoNome: nome });
+
+  return response;
+}
+
+export async function deleteCliente(id: number) {
+  const response = await api.delete(`/cliente/${id}`);
+
+  return response;
+}
