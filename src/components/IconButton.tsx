@@ -18,7 +18,7 @@ export default function IconButton({
         marginRight: 20,
       })}
     >
-      <Ionicons name={iconName} size={24} />
+      <Ionicons name={iconName} size={28} />
     </Pressable>
   );
 }
