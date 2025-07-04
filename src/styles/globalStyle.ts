@@ -27,7 +27,7 @@ const GlobalStyle = StyleSheet.create({
     height: 1,
     backgroundColor: "#ccc",
     marginVertical: 10,
-    borderWidth: 0.5,
+    borderWidth: 0,
   },
   iconGroup: {
     flexDirection: "row",

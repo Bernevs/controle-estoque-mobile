@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { Cliente } from "../../types/Cliente";
-import { getClienteById } from "../../api/service/clienteService";
-import { ScrollView, Text, View } from "react-native";
+import {
+  deleteCliente,
+  getClienteById,
+} from "../../api/service/clienteService";
+import { Alert, ScrollView, Text, View } from "react-native";
 import GlobalStyle from "../../styles/globalStyle";
 import { DataTable } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
@@ -25,6 +28,35 @@ export default function ClienteMenu({ navigation, route }: Props) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDelete = async () => {
+    Alert.alert(
+      "Deletar Cliente?",
+      "Isso removerá tudo relacionado a esse cliente",
+      [
+        { text: "Cancelar" },
+        { text: "Confirmar", onPress: () => confirmDelete() },
+      ]
+    );
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const response = await deleteCliente(route.params.clienteId);
+
+      if (response.status == 204) {
+        Alert.alert("Sucesso", "Cliente deletado com sucesso!", [
+          {
+            text: "OK",
+          },
+        ]);
+      } else {
+        Alert.alert("Error", "Não foi possivel deletar o cliente!", [
+          { text: "OK" },
+        ]);
+      }
+    } catch (error) {}
   };
 
   const pedido = [];
@@ -55,7 +87,11 @@ export default function ClienteMenu({ navigation, route }: Props) {
         }}
       ></EditarCliente>
       <View style={GlobalStyle.iconGroup}>
-        <IconButton iconName="arrow-back" onPress={() => navigation.goBack()} />
+        <IconButton
+          iconName="trash-outline"
+          margin={200}
+          onPress={() => handleDelete()}
+        />
         <IconButton iconName="pencil" onPress={() => setEditarModal(true)} />
         <IconButton
           iconName="cash-outline"
