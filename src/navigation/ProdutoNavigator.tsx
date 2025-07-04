@@ -1,13 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProdutoHome from "../screens/produto/ProdutoHome";
-
-export type ProdutoStackParamList = {
-  ProdutoHome: undefined;
-};
+import { ProdutoStackParamList } from "../types/ProdutoNavigation";
 
 const Stack = createNativeStackNavigator<ProdutoStackParamList>();
 
-export default function ProdutoNavigator<ProdutoStackParamList>() {
+export default function ProdutoNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
