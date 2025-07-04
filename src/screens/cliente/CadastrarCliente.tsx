@@ -11,27 +11,21 @@ import {
 import FormStyle from "../../styles/formStyle";
 import ModalStyle from "../../styles/modalStyle";
 import { createCliente } from "../../api/service/clienteService";
-
-interface CadastrarClientProps {
-  modalVisible: boolean;
-  onClose: () => void;
-}
+import { ModalProps } from "../../types/Modal";
 
 export default function CadastrarCliente({
   modalVisible,
   onClose,
-}: CadastrarClientProps) {
+}: ModalProps) {
   const [nome, setNome] = useState<string>("");
 
   const handleSubmit = async () => {
     try {
       const response = await createCliente(nome);
 
-      console.log(response.status);
-
       if (response.status == 201) {
         Alert.alert("Sucesso", "Cliente cadastrado com sucesso!", [
-          { text: "OK", onPress: () => onClose() },
+          { text: "OK", onPress: () => onClose(true) },
         ]);
       } else {
         Alert.alert("Erro", "Não foi possivel cadastrar o cliente");

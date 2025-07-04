@@ -12,11 +12,6 @@ import FormStyle from "../../styles/formStyle";
 import { useState } from "react";
 import { deleteCliente, updateCliente } from "../../api/service/clienteService";
 import { Alert } from "react-native";
-import { useNavigation } from "expo-router";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { ClienteStackParamList } from "../../navigation/ClienteNavigator";
-
-type NavigationProp = StackNavigationProp<ClienteStackParamList>;
 
 export default function EditarCliente({
   id,
@@ -24,14 +19,13 @@ export default function EditarCliente({
   onClose,
 }: ModalProps) {
   const [nome, setNome] = useState<string>("");
-  const navigation = useNavigation<NavigationProp>();
 
   const handleSubmit = async () => {
     try {
       const response = await updateCliente(id, nome);
       if (response.status == 200) {
         Alert.alert("Sucesso", "Cliente alterado com sucesso!", [
-          { text: "OK", onPress: () => onClose() },
+          { text: "OK", onPress: () => onClose(true) },
         ]);
       } else {
         Alert.alert("Error", "Não foi possivel alterar o cliente", [
@@ -63,8 +57,7 @@ export default function EditarCliente({
           {
             text: "OK",
             onPress: () => {
-              onClose();
-              navigation.goBack();
+              onClose(true);
             },
           },
         ]);
@@ -93,7 +86,7 @@ export default function EditarCliente({
               style={FormStyle.input}
             ></TextInput>
 
-            <Button title="Cancelar" onPress={() => onClose()}></Button>
+            <Button title="Cancelar" onPress={() => onClose(false)}></Button>
             <Button
               title="Alterar Cliente"
               onPress={() => handleSubmit()}
