@@ -18,6 +18,22 @@ const GlobalStyle = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  line: {
+    height: 1,
+    backgroundColor: "#ccc",
+    marginVertical: 10,
+    borderWidth: 0.5,
+  },
+  iconGroup: {
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 10,
+  },
 });
 
 export default GlobalStyle;

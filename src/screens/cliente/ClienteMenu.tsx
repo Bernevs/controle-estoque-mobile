@@ -1,20 +1,30 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Cliente } from "../../types/Cliente";
 import { getClienteById } from "../../api/service/clienteService";
-import { ScrollView, Text } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ClienteStackParamList } from "../../navigation/ClienteNavigator";
+import { ScrollView, Text, View } from "react-native";
 import GlobalStyle from "../../styles/globalStyle";
 import { DataTable } from "react-native-paper";
+import { useFocusEffect } from "@react-navigation/native";
+import Loading from "../../components/Loading";
+import { ClienteStackScreenProps } from "../../types/Navigation";
+import EditarCliente from "./EditarCliente";
+import IconButton from "../../components/IconButton";
 
-type Props = NativeStackScreenProps<ClienteStackParamList, "ClienteMenu">;
+type Props = ClienteStackScreenProps<"ClienteMenu">;
 
-export default function ClienteMenu({ route }: Props) {
+export default function ClienteMenu({ navigation, route }: Props) {
   const [cliente, setCliente] = useState<Cliente>();
+  const [editarModal, setEditarModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchCliente = async () => {
-    const clienteData = await getClienteById(route.params.clienteId);
-    setCliente(clienteData.cliente);
+    try {
+      setLoading(true);
+      const clienteData = await getClienteById(route.params.clienteId);
+      setCliente(clienteData.cliente);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const pedido = [];
@@ -22,12 +32,37 @@ export default function ClienteMenu({ route }: Props) {
     pedido.push(i);
   }
 
-  useEffect(() => {
-    fetchCliente();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchCliente();
+    }, [])
+  );
+
+  if (loading) {
+    return <Loading></Loading>;
+  }
 
   return (
     <ScrollView style={GlobalStyle.screen}>
+      <EditarCliente
+        id={route.params.clienteId}
+        modalVisible={editarModal}
+        onClose={(reload) => {
+          setEditarModal(false);
+          if (reload) {
+            fetchCliente();
+          }
+        }}
+      ></EditarCliente>
+      <View style={GlobalStyle.iconGroup}>
+        <IconButton iconName="arrow-back" onPress={() => navigation.goBack()} />
+        <IconButton iconName="pencil" onPress={() => setEditarModal(true)} />
+        <IconButton
+          iconName="cash-outline"
+          onPress={() => navigation.goBack()}
+        />
+      </View>
+      <View style={GlobalStyle.line}></View>
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>Produto</DataTable.Title>

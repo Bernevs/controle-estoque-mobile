@@ -1,28 +1,59 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Cliente } from "../../types/Cliente";
 import { getClientes } from "../../api/service/clienteService";
 import { ScrollView } from "react-native-gesture-handler";
 import GlobalStyle from "../../styles/globalStyle";
-import { ClienteStackParamList } from "../../navigation/ClienteNavigator";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useFocusEffect } from "@react-navigation/native";
+import Loading from "../../components/Loading";
+import { ClienteStackScreenProps } from "../../types/Navigation";
+import CadastrarCliente from "./CadastrarCliente";
+import IconButton from "../../components/IconButton";
 
-type Props = NativeStackScreenProps<ClienteStackParamList, "ClienteHome">;
+type Props = ClienteStackScreenProps<"ClienteHome">;
 
 export default function ClienteHome({ navigation }: Props) {
   const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [cadastrarModal, setCadastrarModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   async function fetchClientes() {
+    setLoading(true);
     const clienteData = await getClientes();
     setClientes(clienteData.cliente);
+    setLoading(false);
   }
 
-  useEffect(() => {
-    fetchClientes();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchClientes();
+    }, [])
+  );
+
+  if (loading) {
+    return <Loading></Loading>;
+  }
 
   return (
     <ScrollView style={GlobalStyle.screen}>
+      <CadastrarCliente
+        id={0}
+        modalVisible={cadastrarModal}
+        onClose={(reload) => {
+          setCadastrarModal(false);
+          if (reload) {
+            fetchClientes();
+          }
+        }}
+      ></CadastrarCliente>
+      <View style={GlobalStyle.iconGroup}>
+        <IconButton
+          iconName={"add-circle"}
+          onPress={() => setCadastrarModal(true)}
+        ></IconButton>
+      </View>
+
+      <View style={GlobalStyle.line}></View>
       {clientes.map((cliente: Cliente) => (
         <TouchableOpacity
           key={cliente.id}
