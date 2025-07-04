@@ -12,6 +12,7 @@ import FormStyle from "../../styles/formStyle";
 import ModalStyle from "../../styles/modalStyle";
 import { createCliente } from "../../api/service/clienteService";
 import { ModalProps } from "../../types/Modal";
+import GlobalStyle from "../../styles/globalStyle";
 
 export default function CadastrarCliente({
   modalVisible,
@@ -47,15 +48,23 @@ export default function CadastrarCliente({
             <Text style={FormStyle.label}>Nome:</Text>
             <TextInput
               placeholder="Informe o nome do cliente"
+              multiline={true}
               value={nome}
               onChangeText={setNome}
               style={FormStyle.input}
             ></TextInput>
-            <Button title="Cancelar" onPress={() => onClose()}></Button>
-            <Button
-              title="Cadastrar Cliente"
-              onPress={() => handleSubmit()}
-            ></Button>
+            <View style={FormStyle.buttonGroup}>
+              <Button
+                title="Cancelar"
+                color={"red"}
+                onPress={() => onClose()}
+              ></Button>
+              <Button
+                title="Cadastrar Cliente"
+                color={"black"}
+                onPress={() => handleSubmit()}
+              ></Button>
+            </View>
           </View>
         </View>
       </Modal>

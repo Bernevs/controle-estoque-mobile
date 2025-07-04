@@ -10,7 +10,7 @@ import { ModalProps } from "../../types/Modal";
 import ModalStyle from "../../styles/modalStyle";
 import FormStyle from "../../styles/formStyle";
 import { useState } from "react";
-import { deleteCliente, updateCliente } from "../../api/service/clienteService";
+import { updateCliente } from "../../api/service/clienteService";
 import { Alert } from "react-native";
 
 export default function EditarCliente({
@@ -37,37 +37,6 @@ export default function EditarCliente({
     }
   };
 
-  const handleDelete = async () => {
-    Alert.alert(
-      "Deletar Cliente?",
-      "Isso removerá tudo relacionado a esse cliente",
-      [
-        { text: "Cancelar" },
-        { text: "Confirmar", onPress: () => confirmDelete() },
-      ]
-    );
-  };
-
-  const confirmDelete = async () => {
-    try {
-      const response = await deleteCliente(id);
-
-      if (response.status == 204) {
-        Alert.alert("Sucesso", "Cliente deletado com sucesso!", [
-          {
-            text: "OK",
-            onPress: () => {
-              onClose(true);
-            },
-          },
-        ]);
-      } else {
-        Alert.alert("Error", "Não foi possivel deletar o cliente!", [
-          { text: "OK", onPress: () => onClose() },
-        ]);
-      }
-    } catch (error) {}
-  };
   return (
     <SafeAreaView>
       <Modal
@@ -85,16 +54,18 @@ export default function EditarCliente({
               onChangeText={setNome}
               style={FormStyle.input}
             ></TextInput>
-
-            <Button title="Cancelar" onPress={() => onClose(false)}></Button>
-            <Button
-              title="Alterar Cliente"
-              onPress={() => handleSubmit()}
-            ></Button>
-            <Button
-              title="Deletar Cliente"
-              onPress={() => handleDelete()}
-            ></Button>
+            <View style={FormStyle.buttonGroup}>
+              <Button
+                title="Cancelar"
+                color={"red"}
+                onPress={() => onClose()}
+              ></Button>
+              <Button
+                title="Alterar Cliente"
+                color={"black"}
+                onPress={() => handleSubmit()}
+              ></Button>
+            </View>
           </View>
         </View>
       </Modal>
