@@ -1,8 +1,9 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ProdutoHome from "../screens/produto/ProdutoHome";
 import { ProdutoStackParamList } from "../types/ProdutoNavigation";
+import { createStackNavigator } from "@react-navigation/stack";
+import ProdutoHome from "../screens/produto/ProdutoHome";
+import ProdutoMenu from "../screens/produto/ProdutoMenu";
 
-const Stack = createNativeStackNavigator<ProdutoStackParamList>();
+const Stack = createStackNavigator<ProdutoStackParamList>();
 
 export default function ProdutoNavigator() {
   return (
@@ -10,6 +11,11 @@ export default function ProdutoNavigator() {
       <Stack.Screen
         name="ProdutoHome"
         component={ProdutoHome}
+        options={{ headerShown: false }}
+      ></Stack.Screen>
+      <Stack.Screen
+        name={"ProdutoMenu"}
+        component={ProdutoMenu}
         options={{ headerShown: false }}
       ></Stack.Screen>
     </Stack.Navigator>

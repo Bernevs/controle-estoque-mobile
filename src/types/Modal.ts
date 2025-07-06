@@ -1,5 +1,5 @@
 export interface ModalProps {
-  id: number;
+  id?: number;
   modalVisible: boolean;
   onClose: (reload?: boolean) => void;
 }
