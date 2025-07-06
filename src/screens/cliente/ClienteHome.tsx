@@ -37,7 +37,6 @@ export default function ClienteHome({ navigation }: Props) {
   return (
     <ScrollView style={GlobalStyle.screen}>
       <CadastrarCliente
-        id={0}
         modalVisible={cadastrarModal}
         onClose={(reload) => {
           setCadastrarModal(false);

@@ -8,6 +8,7 @@ import Loading from "../../components/Loading";
 import { useFocusEffect } from "@react-navigation/native";
 import { getProdutos } from "../../api/service/produtoService";
 import { ProdutoStackScreenProps } from "../../types/ProdutoNavigation";
+import CadastrarProduto from "./CadastrarProduto";
 
 type Props = ProdutoStackScreenProps<"ProdutoHome">;
 
@@ -21,9 +22,10 @@ export default function ProdutoHome({ navigation }: Props) {
       setLoading(true);
       const response = await getProdutos();
       setProduto(response.data.produto);
-      setLoading(false);
     } catch (error: any) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,13 +40,31 @@ export default function ProdutoHome({ navigation }: Props) {
   }
   return (
     <ScrollView style={GlobalStyle.screen}>
-      <IconButton
-        iconName={"add-circle"}
-        onPress={() => setCadastrarModal(true)}
-      ></IconButton>
+      <CadastrarProduto
+        modalVisible={cadastrarModal}
+        onClose={(reload) => {
+          setCadastrarModal(false);
+          if (reload) {
+            fetchProdutos();
+          }
+        }}
+      ></CadastrarProduto>
+      <View style={GlobalStyle.iconGroup}>
+        <IconButton
+          iconName={"add-circle"}
+          onPress={() => setCadastrarModal(true)}
+        ></IconButton>
+      </View>
+
       <View style={GlobalStyle.line}></View>
       {produto.map((produto: Produto) => (
-        <TouchableOpacity key={produto.id} style={GlobalStyle.item}>
+        <TouchableOpacity
+          key={produto.id}
+          style={GlobalStyle.item}
+          onPress={() =>
+            navigation.navigate("ProdutoMenu", { produtoId: produto.id! })
+          }
+        >
           <View>
             <Text style={GlobalStyle.item_title}>{produto.nome}</Text>
             <Text>Preço de compra: R${produto.preco_compra}</Text>

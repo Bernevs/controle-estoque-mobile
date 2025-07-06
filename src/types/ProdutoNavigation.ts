@@ -3,7 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 
 export type ProdutoStackParamList = {
   ProdutoHome: undefined;
-  ProdutoMenu: { produtoId: number; nome: string };
+  ProdutoMenu: { produtoId: number };
 };
 
 export type ProdutoStackScreenProps<T extends keyof ProdutoStackParamList> =

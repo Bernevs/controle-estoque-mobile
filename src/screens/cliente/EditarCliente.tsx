@@ -22,7 +22,7 @@ export default function EditarCliente({
 
   const handleSubmit = async () => {
     try {
-      const response = await updateCliente(id, nome);
+      const response = await updateCliente(id!, nome);
       if (response.status == 200) {
         Alert.alert("Sucesso", "Cliente alterado com sucesso!", [
           { text: "OK", onPress: () => onClose(true) },

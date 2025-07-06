@@ -1,4 +1,3 @@
-import React from "react";
 import ClienteHome from "../screens/cliente/ClienteHome";
 import ClienteMenu from "../screens/cliente/ClienteMenu";
 import { createStackNavigator } from "@react-navigation/stack";
