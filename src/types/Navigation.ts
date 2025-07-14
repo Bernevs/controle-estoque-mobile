@@ -4,6 +4,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 export type ClienteStackParamList = {
   ClienteHome: undefined;
   ClienteMenu: { clienteId: number; nome: string };
+  PagamentoHome: { clienteId: number };
 };
 
 export type ClienteStackScreenProps<T extends keyof ClienteStackParamList> =

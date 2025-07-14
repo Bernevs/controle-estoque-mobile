@@ -9,6 +9,8 @@ import Loading from "../../components/Loading";
 import { ClienteStackScreenProps } from "../../types/Navigation";
 import CadastrarCliente from "./CadastrarCliente";
 import IconButton from "../../components/IconButton";
+import { Pagamento } from "../../types/Pagamento";
+import { getPagamento } from "../../api/service/pagamentoService";
 
 type Props = ClienteStackScreenProps<"ClienteHome">;
 
@@ -18,10 +20,15 @@ export default function ClienteHome({ navigation }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
 
   async function fetchClientes() {
-    setLoading(true);
-    const clienteData = await getClientes();
-    setClientes(clienteData.cliente);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const clienteData = await getClientes();
+      setClientes(clienteData.cliente);
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useFocusEffect(
