@@ -95,7 +95,11 @@ export default function ClienteMenu({ navigation, route }: Props) {
         <IconButton iconName="pencil" onPress={() => setEditarModal(true)} />
         <IconButton
           iconName="cash-outline"
-          onPress={() => navigation.goBack()}
+          onPress={() =>
+            navigation.navigate("PagamentoHome", {
+              clienteId: route.params.clienteId,
+            })
+          }
         />
       </View>
       <View style={GlobalStyle.line}></View>
