@@ -10,9 +10,14 @@ import {
 import { ModalProps } from "../../types/Modal";
 import ModalStyle from "../../styles/modalStyle";
 import FormStyle from "../../styles/formStyle";
-import { useState } from "react";
-import { updateProduto } from "../../api/service/produtoService";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
+import {
+  getProdutoById,
+  updateProduto,
+} from "../../api/service/produtoService";
 import { Produto } from "../../types/Produto";
+import Loading from "../../components/Loading";
 
 export default function EditarProduto({
   id,
@@ -23,6 +28,22 @@ export default function EditarProduto({
   const [precoCompra, setPrecoCompra] = useState<string>("");
   const [precoVenda, setPrecoVenda] = useState<string>("");
   const [quantidade, setQuantidade] = useState<string>("");
+  const [loading, set_loading] = useState<boolean>(true);
+
+  const fetchProduto = async () => {
+    try {
+      set_loading(true);
+      const response = await getProdutoById(id!);
+      setNome(response.data.produto.nome);
+      setPrecoCompra(response.data.produto.preco_compra);
+      setPrecoVenda(response.data.produto.preco_venda);
+      setQuantidade(String(response.data.produto.quantidade));
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      set_loading(false);
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -44,6 +65,12 @@ export default function EditarProduto({
     } catch (error: any) {}
   };
 
+  useEffect(() => {
+    if (modalVisible && id) {
+      fetchProduto();
+    }
+  }, [id, modalVisible]);
+
   return (
     <SafeAreaView>
       <Modal
@@ -54,42 +81,48 @@ export default function EditarProduto({
       >
         <View style={ModalStyle.modalContainer}>
           <View style={ModalStyle.modalView}>
-            <Text style={FormStyle.label}>Nome: </Text>
-            <TextInput
-              value={nome}
-              onChangeText={setNome}
-              style={FormStyle.input}
-            ></TextInput>
-            <Text style={FormStyle.label}>Preço de compra: </Text>
-            <TextInput
-              value={precoCompra}
-              onChangeText={setPrecoCompra}
-              style={FormStyle.input}
-            ></TextInput>
-            <Text style={FormStyle.label}>Preco de venda: </Text>
-            <TextInput
-              value={precoVenda}
-              onChangeText={setPrecoVenda}
-              style={FormStyle.input}
-            ></TextInput>
-            <Text style={FormStyle.label}>quantidade: </Text>
-            <TextInput
-              value={quantidade}
-              onChangeText={setQuantidade}
-              style={FormStyle.input}
-            ></TextInput>
-            <View style={FormStyle.buttonGroup}>
-              <Button
-                title="Cancelar"
-                color={"red"}
-                onPress={() => onClose()}
-              ></Button>
-              <Button
-                title="Alterar Produto"
-                color={"black"}
-                onPress={() => handleSubmit()}
-              ></Button>
-            </View>
+            {loading ? (
+              <Loading></Loading>
+            ) : (
+              <View>
+                <Text style={FormStyle.label}>Nome: </Text>
+                <TextInput
+                  value={nome}
+                  onChangeText={setNome}
+                  style={FormStyle.input}
+                ></TextInput>
+                <Text style={FormStyle.label}>Preço de compra: </Text>
+                <TextInput
+                  value={precoCompra}
+                  onChangeText={setPrecoCompra}
+                  style={FormStyle.input}
+                ></TextInput>
+                <Text style={FormStyle.label}>Preco de venda: </Text>
+                <TextInput
+                  value={precoVenda}
+                  onChangeText={setPrecoVenda}
+                  style={FormStyle.input}
+                ></TextInput>
+                <Text style={FormStyle.label}>Quantidade: </Text>
+                <TextInput
+                  value={quantidade}
+                  onChangeText={setQuantidade}
+                  style={FormStyle.input}
+                ></TextInput>
+                <View style={FormStyle.buttonGroup}>
+                  <Button
+                    title="Cancelar"
+                    color={"red"}
+                    onPress={() => onClose()}
+                  ></Button>
+                  <Button
+                    title="Alterar Produto"
+                    color={"black"}
+                    onPress={() => handleSubmit()}
+                  ></Button>
+                </View>
+              </View>
+            )}
           </View>
         </View>
       </Modal>

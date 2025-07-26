@@ -16,7 +16,12 @@ const GlobalStyle = StyleSheet.create({
   },
   item_title: {
     fontSize: 14,
+    marginBottom: 10,
     fontWeight: "bold",
+  },
+  item_content: {
+    marginBottom: 10,
+    fontSize: 14,
   },
   loading: {
     flex: 1,

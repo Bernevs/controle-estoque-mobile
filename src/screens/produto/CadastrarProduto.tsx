@@ -30,6 +30,7 @@ export default function CadastrarProduto({
         preco_compra: Number(precoCompra),
         preco_venda: Number(precoVenda),
         quantidade: Number(quantidade),
+        automatico: 0,
         status: 1,
       };
       const response = await createProduto(produto);
