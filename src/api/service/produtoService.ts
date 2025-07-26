@@ -30,3 +30,13 @@ export async function deleteProduto(id: number) {
 
   return response;
 }
+
+export async function readPDF(base64: string) {
+  const response = await fetch("http://192.168.100.181:3000/produto/pdf", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ base64 }),
+  });
+
+  return response;
+}

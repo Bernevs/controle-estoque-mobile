@@ -4,5 +4,6 @@ export interface Produto {
   preco_compra: number;
   preco_venda: number;
   quantidade: number;
+  automatico?: number;
   status: number;
 }
