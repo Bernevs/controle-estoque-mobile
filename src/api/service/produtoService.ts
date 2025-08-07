@@ -32,7 +32,7 @@ export async function deleteProduto(id: number) {
 }
 
 export async function readPDF(base64: string) {
-  const response = await fetch("http://192.168.100.181:3000/produto/pdf", {
+  const response = await fetch("http://192.168.100.247:3000/produto/pdf", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ base64 }),
