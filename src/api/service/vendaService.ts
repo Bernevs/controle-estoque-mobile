@@ -1,8 +1,8 @@
 import { Pedido } from "../../types/Pedido";
-import api from "../api";
+import api, { endpoint } from "../api";
 
 export async function readPDF(base64: string) {
-  const response = await fetch("https://naturagleici-api.vercel.app/pdf", {
+  const response = await fetch(`${endpoint}/pdf`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ base64 }),

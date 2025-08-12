@@ -12,6 +12,11 @@ export async function getProdutos() {
 
   return response;
 }
+export async function getProdutosEsgotados() {
+  const response = await api.get("/produto?esgotado=true");
+
+  return response;
+}
 
 export async function getProdutoById(id: number) {
   const response = await api.get(`/produto/${id}`);

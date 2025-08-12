@@ -8,6 +8,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import {
   deleteProduto,
   getProdutos,
+  getProdutosEsgotados,
   readPDF,
 } from "../../api/service/produtoService";
 import { ProdutoStackScreenProps } from "../../types/ProdutoNavigation";
@@ -20,6 +21,7 @@ type Props = ProdutoStackScreenProps<"ProdutoHome">;
 
 export default function ProdutoHome({ navigation }: Props) {
   const [produto, setProduto] = useState<Produto[]>([]);
+  const [produto_esgotado, setProduto_esgotado] = useState<Produto[]>([]);
   const [produto_id, set_produto_id] = useState<number>();
   const [cadastrarModal, setCadastrarModal] = useState<boolean>(false);
   const [editarModal, setEditarModal] = useState<boolean>(false);
@@ -28,8 +30,10 @@ export default function ProdutoHome({ navigation }: Props) {
   const fetchProdutos = async () => {
     try {
       setLoading(true);
-      const response = await getProdutos();
-      setProduto(response.data.produto);
+      const produtos_response = await getProdutos();
+      const produtos_esgotados_response = await getProdutosEsgotados();
+      setProduto(produtos_response.data.produto);
+      setProduto_esgotado(produtos_esgotados_response.data.produto);
     } catch (error: any) {
       console.error(error);
     } finally {
@@ -167,6 +171,39 @@ export default function ProdutoHome({ navigation }: Props) {
                 onPress={() => {
                   set_produto_id(produto.id!); // atualiza o ID
                   setEditarModal(true); // dá tempo para atualizar
+                }}
+              ></IconButton>
+            </View>
+
+            <Text style={GlobalStyle.item_title}>{produto.nome}</Text>
+            <Text style={GlobalStyle.item_content}>
+              Preço de compra: R${produto.preco_compra}
+            </Text>
+            <Text style={GlobalStyle.item_content}>
+              Preço de venda: R${produto.preco_venda}
+            </Text>
+            <Text style={GlobalStyle.item_content}>
+              Quantidade: {produto.quantidade}
+            </Text>
+          </View>
+        </View>
+      ))}
+      <View style={GlobalStyle.line}></View>
+      {produto_esgotado.map((produto: Produto) => (
+        <View key={produto.id} style={[GlobalStyle.item_esgotado]}>
+          <View>
+            <View style={GlobalStyle.iconGroup}>
+              <IconButton
+                iconName={"trash-outline"}
+                margin={280}
+                onPress={() => handleDelete(produto.id!)}
+              ></IconButton>
+              <IconButton
+                iconName={"create-outline"}
+                margin={0}
+                onPress={() => {
+                  set_produto_id(produto.id!);
+                  setEditarModal(true);
                 }}
               ></IconButton>
             </View>
