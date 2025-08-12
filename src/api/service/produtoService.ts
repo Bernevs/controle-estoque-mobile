@@ -1,5 +1,5 @@
 import { Produto } from "../../types/Produto";
-import api from "../api";
+import api, { endpoint } from "../api";
 
 export async function createProduto(produto: Produto) {
   const response = await api.post("/produto", produto);
@@ -37,7 +37,7 @@ export async function deleteProduto(id: number) {
 }
 
 export async function readPDF(base64: string) {
-  const response = await fetch("http://192.168.100.247:3000/produto/pdf", {
+  const response = await fetch(`${endpoint}/produto/pdf`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ base64 }),
