@@ -1,5 +1,5 @@
 import axios from "axios";
-
-const api = axios.create({ baseURL: "https://naturagleici-api.vercel.app" });
+export const endpoint = "http://192.168.100.247:3000";
+const api = axios.create({ baseURL: endpoint });
 
 export default api;

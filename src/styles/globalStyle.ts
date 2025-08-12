@@ -14,6 +14,15 @@ const GlobalStyle = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#e5e7e9",
   },
+  item_esgotado: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: "#FFCDD2",
+  },
   item_title: {
     fontSize: 16,
     marginBottom: 10,
