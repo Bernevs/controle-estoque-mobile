@@ -43,6 +43,7 @@ export default function ProdutoHome({ navigation }: Props) {
 
   const selectPDF = async () => {
     try {
+      setLoading(true);
       const pdf = await DocumentPicker.getDocumentAsync({
         type: "application/pdf",
       });
@@ -73,7 +74,10 @@ export default function ProdutoHome({ navigation }: Props) {
       navigation.navigate("ImportarProduto", {
         produtos_importados: produtos_formatados,
       });
-    } catch (error: any) {}
+    } catch (error: any) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDelete = async (id: number) => {
