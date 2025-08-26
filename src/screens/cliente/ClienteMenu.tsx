@@ -3,6 +3,7 @@ import { Cliente } from "../../types/Cliente";
 import {
   deleteCliente,
   getClienteById,
+  getPedidoById,
 } from "../../api/service/clienteService";
 import { Alert, ScrollView, Text, View } from "react-native";
 import GlobalStyle from "../../styles/globalStyle";
@@ -12,19 +13,41 @@ import Loading from "../../components/Loading";
 import { ClienteStackScreenProps } from "../../types/Navigation";
 import EditarCliente from "./EditarCliente";
 import IconButton from "../../components/IconButton";
+import { Pedido } from "../../types/Pedido";
+import { Produto } from "../../types/Produto";
+import { getProdutoById } from "../../api/service/produtoService";
 
 type Props = ClienteStackScreenProps<"ClienteMenu">;
 
 export default function ClienteMenu({ navigation, route }: Props) {
   const [cliente, setCliente] = useState<Cliente>();
+  const [produtos, set_produtos] = useState<Produto[]>([]);
+  const [pedido, set_pedido] = useState<Pedido[]>([]);
   const [editarModal, setEditarModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchCliente = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
+
       const clienteData = await getClienteById(route.params.clienteId);
+      const pedidoData = await getPedidoById(route.params.clienteId);
+
       setCliente(clienteData.cliente);
+
+      const pedidosComProduto = await Promise.all(
+        pedidoData.pedido.map(async (p: Pedido) => {
+          const response = await getProdutoById(p.produto_id);
+          const produto = response.data.produto;
+          return {
+            ...p,
+            produto_nome: produto.nome,
+            preco_venda: produto.preco_venda,
+          };
+        })
+      );
+
+      set_pedido(pedidosComProduto);
     } finally {
       setLoading(false);
     }
@@ -59,14 +82,9 @@ export default function ClienteMenu({ navigation, route }: Props) {
     } catch (error) {}
   };
 
-  const pedido = [];
-  for (let i = 0; i < 10; i++) {
-    pedido.push(i);
-  }
-
   useFocusEffect(
     useCallback(() => {
-      fetchCliente();
+      fetchData();
     }, [])
   );
 
@@ -85,7 +103,7 @@ export default function ClienteMenu({ navigation, route }: Props) {
         onClose={(reload) => {
           setEditarModal(false);
           if (reload) {
-            fetchCliente();
+            fetchData();
           }
         }}
       ></EditarCliente>
@@ -108,17 +126,27 @@ export default function ClienteMenu({ navigation, route }: Props) {
       <View style={GlobalStyle.line}></View>
       <DataTable>
         <DataTable.Header>
-          <DataTable.Title>Produto</DataTable.Title>
-          <DataTable.Title>Quantidade</DataTable.Title>
-          <DataTable.Title>Valor</DataTable.Title>
-          <DataTable.Title>Valor Total</DataTable.Title>
+          <DataTable.Title style={{ flex: 2.5 }}>Produto</DataTable.Title>
+          <DataTable.Title>Qtd</DataTable.Title>
+          <DataTable.Title style={{ flex: 1.5 }}>Valor</DataTable.Title>
+          <DataTable.Title style={{ flex: 1.5 }}>
+            <Text style={{ fontWeight: "bold" }}>Valor Total</Text>
+          </DataTable.Title>
         </DataTable.Header>
-        {pedido.map((pedido) => (
-          <DataTable.Row key={pedido}>
-            <DataTable.Cell>teste</DataTable.Cell>
-            <DataTable.Cell>teste</DataTable.Cell>
-            <DataTable.Cell>teste</DataTable.Cell>
-            <DataTable.Cell>teste</DataTable.Cell>
+        {pedido.map((pedido: Pedido) => (
+          <DataTable.Row key={pedido.id}>
+            <DataTable.Cell style={{ flex: 2.5 }}>
+              {pedido.produto_nome}
+            </DataTable.Cell>
+            <DataTable.Cell>{pedido.quantidade}</DataTable.Cell>
+            <DataTable.Cell style={{ flex: 1.5 }}>
+              R${Number(pedido.preco_venda ?? 0).toFixed(2)}
+            </DataTable.Cell>
+            <DataTable.Cell style={{ flex: 1.5 }}>
+              <Text style={{ fontWeight: "bold" }}>
+                R${(pedido.preco_venda! * pedido.quantidade).toFixed(2)}
+              </Text>
+            </DataTable.Cell>
           </DataTable.Row>
         ))}
       </DataTable>

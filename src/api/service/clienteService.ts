@@ -29,3 +29,9 @@ export async function deleteCliente(id: number) {
 
   return response;
 }
+
+export async function getPedidoById(id: number) {
+  const response = await api.get(`/pedido/cliente/${id}`);
+
+  return response.data;
+}
