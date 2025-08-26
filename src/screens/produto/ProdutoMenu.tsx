@@ -71,7 +71,10 @@ export default function ProdutoMenu({ navigation, route }: Props) {
     return <Loading></Loading>;
   }
   return (
-    <ScrollView style={GlobalStyle.screen}>
+    <ScrollView
+      style={GlobalStyle.screen}
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
       <EditarProduto
         id={route.params.produtoId}
         modalVisible={editarModal}

@@ -102,7 +102,10 @@ export default function VendaHome() {
   }
 
   return (
-    <ScrollView style={GlobalStyle.screen}>
+    <ScrollView
+      style={GlobalStyle.screen}
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
       <View style={GlobalStyle.iconGroup}>
         <Button
           color="red"
