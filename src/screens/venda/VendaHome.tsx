@@ -18,7 +18,9 @@ export default function VendaHome() {
   const [produtos, set_produtos] = useState<Produto[]>([]);
   const [produto_id, set_produto_id] = useState<number>(0);
   const [produto_nome, set_produto_nome] = useState<string>();
+  const [preco_venda, set_preco_venda] = useState<number>();
   const [quantidade_escolhida, set_quantidade_escolhida] = useState<number>();
+
   const [pedido, set_pedido] = useState<Pedido[]>([]);
   const id = useRef(0);
   const [loading, set_loading] = useState<boolean>(true);
@@ -31,6 +33,11 @@ export default function VendaHome() {
       quantidade.push({ label: i.toString(), value: i });
     }
   }
+
+  const valor_total = pedido.reduce(
+    (acc, v) => acc + v.preco_venda! * v.quantidade,
+    0
+  );
 
   const fetchData = async () => {
     try {
@@ -71,6 +78,7 @@ export default function VendaHome() {
               set_pedido([]);
               set_cliente_id(0);
               set_produto_id(0);
+              fetchData();
               set_loading(false);
             },
           },
@@ -129,6 +137,7 @@ export default function VendaHome() {
                   cliente_nome: cliente_nome!,
                   produto_id: produto_id!,
                   produto_nome: produto_nome!,
+                  preco_venda: preco_venda!,
                   quantidade: quantidade_escolhida!,
                 },
               ])
@@ -168,6 +177,7 @@ export default function VendaHome() {
             );
             if (produto_selecionado) {
               set_produto_nome(produto_selecionado.nome);
+              set_preco_venda(produto_selecionado.preco_venda);
             }
           }}
           value={produto_id}
@@ -184,13 +194,22 @@ export default function VendaHome() {
         <View key={pedido.id} style={GlobalStyle.item}>
           <View>
             <Text style={GlobalStyle.item_content}>{pedido.cliente_nome}</Text>
-            <Text style={GlobalStyle.item_content}>{pedido.produto_nome}</Text>
+            <Text style={GlobalStyle.item_content}>
+              {pedido.produto_nome} | R${pedido.preco_venda}
+            </Text>
             <Text style={GlobalStyle.item_content}>
               Quantidade: {pedido.quantidade}
+            </Text>
+            <Text style={GlobalStyle.item_content}>
+              Valor do pedido: R${pedido.preco_venda! * pedido.quantidade}
             </Text>
           </View>
         </View>
       ))}
+      <View style={GlobalStyle.line}></View>
+      <View style={GlobalStyle.item}>
+        <Text style={GlobalStyle.item_title}>Valor Total: R${valor_total}</Text>
+      </View>
     </ScrollView>
   );
 }
