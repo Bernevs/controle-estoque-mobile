@@ -40,7 +40,10 @@ export default function PagamentoHome({ route }: Props) {
     return <Loading></Loading>;
   }
   return (
-    <ScrollView style={GlobalStyle.screen}>
+    <ScrollView
+      style={GlobalStyle.screen}
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
       <CadastrarPagamento
         modalVisible={cadastrarModal}
         id={route.params.clienteId}

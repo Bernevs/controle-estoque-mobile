@@ -42,7 +42,10 @@ export default function ClienteHome({ navigation }: Props) {
   }
 
   return (
-    <ScrollView style={GlobalStyle.screen}>
+    <ScrollView
+      style={GlobalStyle.screen}
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
       <CadastrarCliente
         modalVisible={cadastrarModal}
         onClose={(reload) => {

@@ -116,7 +116,10 @@ export default function ProdutoHome({ navigation }: Props) {
     return <Loading></Loading>;
   }
   return (
-    <ScrollView style={GlobalStyle.screen}>
+    <ScrollView
+      style={GlobalStyle.screen}
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
       <CadastrarProduto
         modalVisible={cadastrarModal}
         onClose={(reload) => {

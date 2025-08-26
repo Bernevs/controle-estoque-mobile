@@ -75,7 +75,10 @@ export default function ClienteMenu({ navigation, route }: Props) {
   }
 
   return (
-    <ScrollView style={GlobalStyle.screen}>
+    <ScrollView
+      style={GlobalStyle.screen}
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
       <EditarCliente
         id={route.params.clienteId}
         modalVisible={editarModal}

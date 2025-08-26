@@ -68,7 +68,10 @@ export default function ImportarProduto({ navigation, route }: Props) {
     return <Loading></Loading>;
   }
   return (
-    <ScrollView style={GlobalStyle.screen}>
+    <ScrollView
+      style={GlobalStyle.screen}
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
       <View style={GlobalStyle.iconGroup}>
         <View style={{ marginRight: 190 }}>
           <Button
