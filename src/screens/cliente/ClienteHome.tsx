@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Cliente } from "../../types/Cliente";
-import { getClientes } from "../../api/service/clienteService";
+import { getClientes, getValorCliente } from "../../api/service/clienteService";
 import { ScrollView } from "react-native-gesture-handler";
 import GlobalStyle from "../../styles/globalStyle";
 import { useFocusEffect } from "@react-navigation/native";
@@ -9,8 +9,6 @@ import Loading from "../../components/Loading";
 import { ClienteStackScreenProps } from "../../types/Navigation";
 import CadastrarCliente from "./CadastrarCliente";
 import IconButton from "../../components/IconButton";
-import { Pagamento } from "../../types/Pagamento";
-import { getPagamento } from "../../api/service/pagamentoService";
 
 type Props = ClienteStackScreenProps<"ClienteHome">;
 
@@ -22,7 +20,7 @@ export default function ClienteHome({ navigation }: Props) {
   async function fetchClientes() {
     try {
       setLoading(true);
-      const clienteData = await getClientes();
+      const clienteData = await getValorCliente();
       setClientes(clienteData.cliente);
     } catch (error: any) {
       console.error(error);
@@ -76,8 +74,12 @@ export default function ClienteHome({ navigation }: Props) {
         >
           <View>
             <Text style={GlobalStyle.item_title}>{cliente.nome}</Text>
-            <Text>Total Pago: R$0</Text>
-            <Text>Valor Final: R$0</Text>
+            <Text>
+              Total Pago: R${Number(cliente.total_pago || 0).toFixed(2)}
+            </Text>
+            <Text>
+              Valor Final: R${Number(cliente.total_gasto || 0).toFixed(2)}
+            </Text>
           </View>
         </TouchableOpacity>
       ))}
