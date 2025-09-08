@@ -18,6 +18,12 @@ export async function createCliente(nome: string) {
   return response;
 }
 
+export async function getValorCliente() {
+  const response = await api.get("/cliente/total");
+
+  return response.data;
+}
+
 export async function updateCliente(id: number, nome: string) {
   const response = await api.put(`/cliente/${id}`, { novoNome: nome });
 

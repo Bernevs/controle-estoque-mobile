@@ -13,6 +13,12 @@ export async function getPagamento(cliente_id: number) {
   return response;
 }
 
+export async function getValorPago(cliente_id: number) {
+  const response = await api.get(`/pagamento/total/${cliente_id}`);
+
+  return response;
+}
+
 export async function getPagamentoById(id: number) {
   const response = await api.get(`/pagamento/${id}`);
 

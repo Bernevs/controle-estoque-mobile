@@ -21,7 +21,6 @@ type Props = ClienteStackScreenProps<"ClienteMenu">;
 
 export default function ClienteMenu({ navigation, route }: Props) {
   const [cliente, setCliente] = useState<Cliente>();
-  const [produtos, set_produtos] = useState<Produto[]>([]);
   const [pedido, set_pedido] = useState<Pedido[]>([]);
   const [editarModal, setEditarModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,6 +44,10 @@ export default function ClienteMenu({ navigation, route }: Props) {
             preco_venda: produto.preco_venda,
           };
         })
+      );
+
+      pedidosComProduto.sort((a, b) =>
+        a.produto_nome.localeCompare(b.produto_nome)
       );
 
       set_pedido(pedidosComProduto);
