@@ -3,7 +3,7 @@
 Este é um aplicativo mobile desenvolvido em **React Native com Expo** para uso individual.  
 Ele permite gerenciar clientes, produtos, pedidos e pagamentos de forma simples e prática.  
 
-A aplicação consome a API do projeto [`sistemaestoque-api`](#-api).
+A aplicação consome a API do projeto [`controle-estoque-mobile-api`](#-api).
 
 ---
 
