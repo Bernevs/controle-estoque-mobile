@@ -74,11 +74,14 @@ export default function ClienteHome({ navigation }: Props) {
         >
           <View>
             <Text style={GlobalStyle.item_title}>{cliente.nome}</Text>
-            <Text>
-              Total Pago: R${Number(cliente.total_pago || 0).toFixed(2)}
+            <Text style={GlobalStyle.item_content}>
+              Total Pago: R${Number(cliente.total_pago ?? 0).toFixed(2)}
             </Text>
-            <Text>
-              Valor Final: R${Number(cliente.total_gasto || 0).toFixed(2)}
+            <Text style={GlobalStyle.item_content}>
+              Valor Final: R$
+              {Number(
+                (cliente.total_gasto ?? 0) - (cliente.total_pago ?? 0)
+              ).toFixed(2)}
             </Text>
           </View>
         </TouchableOpacity>

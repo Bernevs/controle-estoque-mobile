@@ -128,30 +128,67 @@ export default function ClienteMenu({ navigation, route }: Props) {
       </View>
       <View style={GlobalStyle.line}></View>
       <DataTable>
-        <DataTable.Header>
-          <DataTable.Title style={{ flex: 2.5 }}>Produto</DataTable.Title>
-          <DataTable.Title>Qtd</DataTable.Title>
-          <DataTable.Title style={{ flex: 1.5 }}>Valor</DataTable.Title>
-          <DataTable.Title style={{ flex: 1.5 }}>
-            <Text style={{ fontWeight: "bold" }}>Valor Total</Text>
+        <DataTable.Header style={{ backgroundColor: "#eee" }}>
+          <DataTable.Title style={{ flex: 3, justifyContent: "flex-start" }}>
+            Produto
+          </DataTable.Title>
+          <DataTable.Title style={{ flex: 1, justifyContent: "center" }}>
+            Qtd
+          </DataTable.Title>
+          <DataTable.Title style={{ flex: 1, justifyContent: "center" }}>
+            Valor
+          </DataTable.Title>
+          <DataTable.Title
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              borderLeftWidth: 1,
+              borderLeftColor: "#ccc",
+            }}
+          >
+            <Text style={{ fontWeight: "bold" }}>Total</Text>
           </DataTable.Title>
         </DataTable.Header>
+
         {pedido.map((pedido: Pedido) => (
-          <DataTable.Row key={pedido.id}>
-            <DataTable.Cell style={{ flex: 2.5 }}>
+          <DataTable.Row
+            key={pedido.id}
+            style={{ borderBottomWidth: 1, borderBottomColor: "#eee" }}
+          >
+            <DataTable.Cell style={{ flex: 3, justifyContent: "flex-start" }}>
               {pedido.produto_nome}
             </DataTable.Cell>
-            <DataTable.Cell>{pedido.quantidade}</DataTable.Cell>
-            <DataTable.Cell style={{ flex: 1.5 }}>
-              R${Number(pedido.preco_venda ?? 0).toFixed(2)}
+            <DataTable.Cell style={{ flex: 1, justifyContent: "center" }}>
+              {pedido.quantidade}
             </DataTable.Cell>
-            <DataTable.Cell style={{ flex: 1.5 }}>
+            <DataTable.Cell style={{ flex: 1, justifyContent: "center" }}>
+              {Number(pedido.preco_venda ?? 0).toFixed(2)}
+            </DataTable.Cell>
+            <DataTable.Cell
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                borderLeftWidth: 1,
+                borderLeftColor: "#ccc",
+              }}
+            >
               <Text style={{ fontWeight: "bold" }}>
-                R${(pedido.preco_venda! * pedido.quantidade).toFixed(2)}
+                {(pedido.preco_venda! * pedido.quantidade).toFixed(2)}
               </Text>
             </DataTable.Cell>
           </DataTable.Row>
         ))}
+        <DataTable.Row style={{ backgroundColor: "#eee" }}>
+          <DataTable.Cell style={{ flex: 4, justifyContent: "center" }}>
+            Total
+          </DataTable.Cell>
+          <DataTable.Cell style={{ flex: 2, justifyContent: "center" }}>
+            R$
+            {pedido
+              .reduce((acc, p) => acc + p.preco_venda! * p.quantidade, 0)
+              .toFixed(2)}
+          </DataTable.Cell>
+        </DataTable.Row>
       </DataTable>
     </ScrollView>
   );
